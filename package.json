@@ -1,7 +1,7 @@
 {
   "name": "llm-file-context-bundler",
   "version": "1.0.0",
-  "description": "A CLI tool to combine all TypeScript files in a directory into a single file for LLM context.",
+  "description": "A CLI tool to combine all TypeScript/JS files in a directory into a single file for LLM context.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
