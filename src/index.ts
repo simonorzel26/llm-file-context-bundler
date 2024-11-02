@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import chokidar from "chokidar";
 import { Command } from "commander";
 
 const { readdir, readFile, writeFile } = fs.promises;
@@ -36,6 +37,7 @@ program
 		"",
 	)
 	.option("-v, --verbose", "Enable verbose logging", false)
+	.option("-w, --watch", "Watch the source directory for changes", false)
 	.parse(process.argv);
 
 const options = program.opts();
@@ -125,17 +127,18 @@ class FileCombiner implements IFileCombiner {
 
 class Application {
 	private fileScanner: IFileScanner;
-	private fileCombiner: IFileCombiner;
+	private fileCombiner: IFileCombiner | null = null;
+	private verbose: boolean;
 
 	constructor() {
 		const sourceDirectory = options.source;
 		const outputFile = options.output;
-		const verbose = options.verbose;
+		this.verbose = options.verbose;
 
 		const includePatterns = options.include ? options.include.split(",") : [];
 		const excludePatterns = options.exclude ? options.exclude.split(",") : [];
 
-		if (verbose) {
+		if (this.verbose) {
 			console.log("Application configuration:");
 			console.log(`  Source Directory: ${sourceDirectory}`);
 			console.log(`  Output File: ${outputFile}`);
@@ -147,13 +150,19 @@ class Application {
 			sourceDirectory,
 			includePatterns,
 			excludePatterns,
-			verbose,
+			this.verbose,
 		);
-
-		this.fileCombiner = new FileCombiner([], outputFile, verbose);
 	}
 
 	public async run(): Promise<void> {
+		await this.combineFiles();
+
+		if (options.watch) {
+			this.watchFiles();
+		}
+	}
+
+	private async combineFiles(): Promise<void> {
 		try {
 			const filePaths = await this.fileScanner.scan();
 
@@ -162,19 +171,31 @@ class Application {
 				return;
 			}
 
-			// Initialize the fileCombiner with filePaths
 			this.fileCombiner = new FileCombiner(
 				filePaths,
 				options.output,
-				options.verbose,
+				this.verbose,
 			);
 
-			if (this.fileCombiner) {
-				await this.fileCombiner.combine();
-			}
+			await this.fileCombiner.combine();
 		} catch (error) {
-			console.error("An error occurred:", error);
+			console.error("An error occurred during file combining:", error);
 		}
+	}
+	private watchFiles(): void {
+		const watcher = chokidar.watch(options.source, {
+			ignored: /(^|[\/\\])\../, // ignore dotfiles
+			persistent: true,
+		});
+
+		watcher.on("all", async (event, path) => {
+			if (this.verbose) {
+				console.log(`File ${path} has been ${event}`);
+			}
+			await this.combineFiles();
+		});
+
+		console.log(`Watching for file changes in ${options.source}...`);
 	}
 }
 
