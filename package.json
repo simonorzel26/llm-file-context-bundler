@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/simonorzel26/llm-file-context-bundler.git"
   },
-  "homepage": "https://github.com/simonorzel26/llm-file-context-bundler",
+  "homepage": "https://www.npmjs.com/package/llm-file-context-bundler",
   "files": [
     "dist/**/*"
   ],

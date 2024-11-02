@@ -2,6 +2,8 @@
 
 A command-line tool to combine all files of specified types in a directory into a single file. Originally designed for combining TypeScript files for Large Language Model (LLM) context, but it can be used with any file types.
 
+**npm Package:** [llm-file-context-bundler](https://www.npmjs.com/package/llm-file-context-bundler)
+
 
 ## Example Output
 
