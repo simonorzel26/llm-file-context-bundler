@@ -1,6 +1,6 @@
 {
   "name": "llm-file-context-bundler",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A CLI tool to combine all TypeScript/JS files in a directory into a single file for LLM context.",
   "type": "module",
   "main": "dist/index.js",
@@ -17,11 +17,13 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build": "tsc",
-    "check": "biome check --write ./src",
-    "workflow:check": "biome check ./src",
-    "release": "pnpm run build && changeset publish"
-  },
+  "build": "tsc",
+  "start": "node dist/index.js",
+  "bundle": "node dist/index.js --watch",
+  "check": "biome check --write ./src",
+  "workflow:check": "biome check ./src",
+  "release": "pnpm run build && changeset publish"
+},
   "author": "Simon Orzel",
   "license": "MIT",
   "bugs": {
