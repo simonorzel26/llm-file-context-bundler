@@ -1,18 +1,19 @@
 {
-  "name": "ts-npm-package-boilerplate-2024",
+  "name": "llm-file-context-bundler",
+  "version": "1.0.0",
+  "description": "A CLI tool to combine all TypeScript files in a directory into a single file for LLM context.",
   "type": "module",
-  "description": "TS NPM Package Boilerplate for 2024 ",
-  "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "llm-file-context-bundler": "./dist/index.js"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simonorzel26/ts-npm-package-boilerplate-2024.git"
+    "url": "git+https://github.com/simonorzel26/llm-file-context-bundler.git"
   },
-  "homepage": "https://github.com/simonorzel26/ts-npm-package-boilerplate-2024",
-  "files": [
-    "dist/**/*"
-  ],
+  "homepage": "https://github.com/simonorzel26/llm-file-context-bundler",
+  "files": ["dist/**/*"],
   "scripts": {
     "build": "tsc",
     "check": "biome check --write ./src",
@@ -21,13 +22,18 @@
   },
   "author": "Simon Orzel",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simonorzel26/llm-file-context-bundler/issues"
+  },
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@changesets/cli": "^2.27.7",
     "@total-typescript/tsconfig": "^1.0.4",
+    "@types/node": "^22.8.6",
     "typescript": "^5.5.3"
   },
-  "bugs": {
-    "url": "https://github.com/simonorzel26/ts-npm-package-boilerplate-2024/issues"
-  }
+  "keywords": ["typescript", "llm", "bundle", "combine", "cli", "script", "context"]
 }
